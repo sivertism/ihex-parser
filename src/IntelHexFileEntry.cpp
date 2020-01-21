@@ -1,12 +1,12 @@
 #include <ihex-parser/IntelHexFileEntry.hpp>
 #include <iostream>
 
-IntelHexFileEntry::IntelHexFileEntry(string entry) {
+IntelHexFileEntry::IntelHexFileEntry(std::string entry) {
   if (entry[0] != ':') {
-    stringstream o;
+    std::stringstream o;
     o << "Invalid hex entry: ";
     o << entry;
-    throw ios_base::failure(o.str());
+    throw std::ios_base::failure(o.str());
   }
 
   uint8_t count = 2 * asciiHexTo64(entry.substr(1, 2));
@@ -19,13 +19,13 @@ IntelHexFileEntry::IntelHexFileEntry(string entry) {
   uint8_t cChecksum = (count / 2) + lAddress + hAddress + recordType;
 
   if (count != entry.length() - (9 + 2 + 1)) {
-    stringstream o;
+    std::stringstream o;
     o << "length provided != length of data | ";
     o << (size_t)(count);
     o << " != ";
     o << (entry.length() - (9 + 2 + 1));
 
-    throw ios_base::failure(o.str());
+    throw std::ios_base::failure(o.str());
   }
 
   for (uint8_t i = 0; i < count; i += 2) {
@@ -37,25 +37,25 @@ IntelHexFileEntry::IntelHexFileEntry(string entry) {
   uint8_t checksum = asciiHexTo64(entry.substr(entry.length() - 3, 2));
 
   if (((uint8_t)(cChecksum + checksum)) != ((uint8_t)0)) {
-    cout << hex << (size_t)address << endl;
-    cout << dec;
+    std::cout << std::hex << (size_t)address << std::endl;
+    std::cout << std::dec;
 
-    stringstream o;
+    std::stringstream o;
     o << "(cChecksum + checksum) != 0 | 0x";
-    o << hex;
+    o << std::hex;
     o << (size_t)(cChecksum + checksum);
     o << " != 0 | cChecksum = 0x";
     o << (size_t)cChecksum;
     o << ", checksum = 0x";
     o << (size_t)checksum;
 
-    throw ios_base::failure(o.str());
+    throw std::ios_base::failure(o.str());
   }
 }
 
-uint64_t IntelHexFileEntry::asciiHexTo64(string s) {
-  stringstream o;
-  o << hex << s;
+uint64_t IntelHexFileEntry::asciiHexTo64(std::string s) {
+  std::stringstream o;
+  o << std::hex << s;
   uint64_t v;
   o >> v;
   return v;
@@ -71,7 +71,7 @@ uint32_t IntelHexFileEntry::getEndAddress() const {
 
 uint8_t IntelHexFileEntry::getRecordType() const { return recordType; }
 
-vector<uint8_t> &IntelHexFileEntry::getData() { return data; }
+std::vector<uint8_t> &IntelHexFileEntry::getData() { return data; }
 
 uint8_t IntelHexFileEntry::getChecksum() const { return checksum; }
 

@@ -16,18 +16,16 @@
 #include "IntelHexFileEntry.hpp"
 #include "ProgramPage.hpp"
 
-using namespace std;
-
 class Program {
  private:
-  vector<uint8_t> data;
+  std::vector<uint8_t> data;
 
  public:
-  Program(const map<uint32_t, IntelHexFileEntry>& addressToFileEntries);
+  Program(const std::map<uint32_t, IntelHexFileEntry>& addressToFileEntries);
 
-  vector<ProgramPage> getPages(size_t pageSize);
+  std::vector<ProgramPage> getPages(size_t pageSize);
 
-  friend ostream& operator<<(ostream& os, const Program& rhs);
+  friend std::ostream& operator<<(std::ostream& os, const Program& rhs);
 };
 
 #endif

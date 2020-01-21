@@ -1,14 +1,14 @@
 #include <ihex-parser/IntelHexFile.hpp>
 #include <iostream>
 
-IntelHexFile::IntelHexFile(string filename) {
-  ifstream file(filename.c_str());
+IntelHexFile::IntelHexFile(std::string filename) {
+  std::ifstream file(filename.c_str());
 
   if (!file.is_open()) {
-    stringstream o;
+    std::stringstream o;
     o << "Cannot load file ";
     o << filename;
-    throw ios_base::failure(o.str());
+    throw std::ios_base::failure(o.str());
   }
 
   char buffer[INTEL_HEX_FILE_MAX_ENTRY_SIZE];
@@ -28,14 +28,13 @@ IntelHexFile::IntelHexFile(string filename) {
 
     if ((entry.getRecordType() != 0x0) && (entry.getRecordType() != 0x1) &&
         (entry.getRecordType() != 0x4) && (entry.getRecordType() != 0x5)) {
-      stringstream o;
+      std::stringstream o;
       o << "Unsupported record type: 0x";
-      o << hex << (uint32_t)entry.getRecordType();
-      throw ios_base::failure(o.str());
+      o << std::hex << (uint32_t)entry.getRecordType();
+      throw std::ios_base::failure(o.str());
 
     } else if (entry.getRecordType() == 0x4) {
       baseAddress = ((entry.getData()[0] << 8) | entry.getData()[1]) << 16;
-      cout << "New base address: 0x" << hex << baseAddress << std::endl;
 
     } else if (entry.getRecordType() == 0x5) {
       // Ignore
@@ -43,43 +42,42 @@ IntelHexFile::IntelHexFile(string filename) {
       // EOF -- ignore
     } else {
       entry.setAddress(entry.getAddress() + baseAddress);
-      cout << "Adding entry type " << dec << entry.getRecordType()
-           << " address: 0x" << hex << entry.getAddress() << "-0x"
-           << entry.getEndAddress() << std::endl;
       addressToFileEntries.insert(
-          pair<uint32_t, IntelHexFileEntry>(entry.getAddress(), entry));
+          std::pair<uint32_t, IntelHexFileEntry>(entry.getAddress(), entry));
     }
   }
 }
 
 Program IntelHexFile::getProgram() {
-  return Program((const map<uint32_t, IntelHexFileEntry>)addressToFileEntries);
+  return Program(
+      (const std::map<uint32_t, IntelHexFileEntry>)addressToFileEntries);
 }
 
-vector<pair<uint32_t, vector<uint8_t>&>> IntelHexFile::getProgramData() {
-  vector<pair<uint32_t, vector<uint8_t>&>> retval;
+std::vector<std::pair<uint32_t, std::vector<uint8_t>&>>
+IntelHexFile::getProgramData() {
+  std::vector<std::pair<uint32_t, std::vector<uint8_t>&>> retval;
 
   for (auto& e : addressToFileEntries) {
-    retval.push_back(
-        pair<uint32_t, vector<uint8_t>&>(e.first, e.second.getData()));
+    retval.push_back(std::pair<uint32_t, std::vector<uint8_t>&>(
+        e.first, e.second.getData()));
   }
 
   return retval;
 }
 
-ostream& operator<<(ostream& os, const IntelHexFile& rhs) {
+std::ostream& operator<<(std::ostream& os, const IntelHexFile& rhs) {
   size_t lAddress = (rhs.addressToFileEntries.begin())->first;
   size_t hAddress =
       ((rhs.addressToFileEntries.rbegin())->second).getEndAddress();
   size_t size = rhs.addressToFileEntries.size();
 
-  os << "[Address Range: 0x" << hex << (size_t)lAddress << "-0x" << hex
-     << (size_t)hAddress << ", Number of HexFileEntries: " << dec << size
-     << "]\n";
+  os << "[Address Range: 0x" << std::hex << (size_t)lAddress << "-0x"
+     << std::hex << (size_t)hAddress
+     << ", Number of HexFileEntries: " << std::dec << size << "]\n";
   unsigned int i = 0;
   for (const auto& e : rhs.addressToFileEntries) {
-    os << "Entry : " << dec << i++ << " Address range: 0x" << hex << e.first
-       << "-0x" << e.second.getEndAddress() << "\n";
+    os << "Entry : " << std::dec << i++ << " Address range: 0x" << std::hex
+       << e.first << "-0x" << e.second.getEndAddress() << "\n";
   }
   return os;
 }

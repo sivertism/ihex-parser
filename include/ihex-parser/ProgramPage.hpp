@@ -16,25 +16,24 @@
 #include <vector>
 #include "IntelHexFileEntry.hpp"
 
-using namespace std;
-
 class ProgramPage {
  private:
   size_t address;
   size_t pageSize;
-  vector<uint8_t> data;
+  std::vector<uint8_t> data;
 
  public:
-  ProgramPage(size_t address, size_t pageSize, const vector<uint8_t>& pageData);
+  ProgramPage(size_t address, size_t pageSize,
+              const std::vector<uint8_t>& pageData);
 
   size_t getAddress();
   size_t getPageSize();
   size_t getSize();
   size_t getEndAddress();
 
-  vector<uint8_t> getData();
+  std::vector<uint8_t> getData();
 
-  friend ostream& operator<<(ostream& os, const ProgramPage& rhs);
+  friend std::ostream& operator<<(std::ostream& os, const ProgramPage& rhs);
 };
 
 #endif

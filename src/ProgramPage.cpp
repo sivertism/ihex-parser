@@ -1,7 +1,7 @@
 #include <ihex-parser/ProgramPage.hpp>
 
 ProgramPage::ProgramPage(size_t address, size_t pageSize,
-                         const vector<uint8_t>& pageData) {
+                         const std::vector<uint8_t>& pageData) {
   this->address = address;
   this->pageSize = pageSize;
   data.resize(pageData.size());
@@ -21,21 +21,21 @@ size_t ProgramPage::getPageSize() { return pageSize; }
 
 size_t ProgramPage::getEndAddress() { return address + data.size(); }
 
-vector<uint8_t> ProgramPage::getData() { return data; }
+std::vector<uint8_t> ProgramPage::getData() { return data; }
 
-ostream& operator<<(ostream& os, const ProgramPage& rhs) {
-  os << "[Start Address: 0x" << hex << rhs.address;
-  os << ", End Address: 0x" << hex << (rhs.address + rhs.data.size());
+std::ostream& operator<<(std::ostream& os, const ProgramPage& rhs) {
+  os << "[Start Address: 0x" << std::hex << rhs.address;
+  os << ", End Address: 0x" << std::hex << (rhs.address + rhs.data.size());
   os << ", Size: " << rhs.data.size();
-  os << ", Page Size: " << dec << rhs.pageSize;
+  os << ", Page Size: " << std::dec << rhs.pageSize;
   os << ", Data: ";
 
-  for (vector<uint8_t>::const_iterator it = rhs.data.begin();
+  for (std::vector<uint8_t>::const_iterator it = rhs.data.begin();
        it != rhs.data.end(); ++it) {
     uint8_t v = *it;
-    os << hex << (size_t)v;
+    os << std::hex << (size_t)v;
   }
 
-  os << dec << "]";
+  os << std::dec << "]";
   return os;
 }

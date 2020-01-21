@@ -18,22 +18,20 @@
 #include "IntelHexFileEntry.hpp"
 #include "Program.hpp"
 
-using namespace std;
-
 #define INTEL_HEX_FILE_MAX_ENTRY_SIZE 524
 
 class IntelHexFile {
  private:
-  map<uint32_t, IntelHexFileEntry> addressToFileEntries;
+  std::map<uint32_t, IntelHexFileEntry> addressToFileEntries;
 
  public:
-  IntelHexFile(string filename);
+  IntelHexFile(std::string filename);
 
   Program getProgram();
 
-  vector<pair<uint32_t, vector<uint8_t>&>> getProgramData();
+  std::vector<std::pair<uint32_t, std::vector<uint8_t>&>> getProgramData();
 
-  friend ostream& operator<<(ostream& os, const IntelHexFile& rhs);
+  friend std::ostream& operator<<(std::ostream& os, const IntelHexFile& rhs);
 };
 
 #endif
