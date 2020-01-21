@@ -1,8 +1,56 @@
 IntelHexParser
 ==============
 
-C++ Intel Hex Parser
+C++ Intel Hex Parser, a utility to read executables in the [Intel Hex Format](https://en.wikipedia.org/wiki/Intel_HEX).
+This repository was forked from [bstrysko/IntelHexParser](https://github.com/bstrysko/IntelHexParser) and modified to add support for Record Type 4, fix various bugs, add accessor (IntelHexFile::getProgramData) to raw entries to avoid populating entire address space (as the original IntelHexFile::getProgram does).
 
-ONLY RECORD TYPES 0x0 AND 0x1 ARE SUPPORTED
+Installation:
+=============
 
-The IntelHexParser library automatically handles the parsing of files in the Intel Hex File Format.  This project was originally started as part of a AVR I2C Bootloader and then moved to a seperate library.  The library currently is only compiled to a dynamic library (*.so).  More information on how to use the library can be found in INSTALL.
+``` bash
+git clone https://github.com/sivertism/ihex-parser.git
+cd ihex-parser
+mkdir build
+cd build
+cmake ..
+ninja
+sudo ninja install
+```
+
+To test that it works, you can run the example app to print the contents of a hex file
+
+``` bash
+./apps/example <path/to/a/.hex/file>
+```
+It should print out the start address and data content of each type 0 entry.
+
+Including in other CMake projects:
+==================================
+
+Add the following to your `CMakeLists.txt` file:
+
+``` cmake
+find package (ihex-parser REQUIRED)
+
+# ...
+
+target_link_libraries(myProject ... IntelHexParser::ihex-parser)
+```
+
+Include the header in your source `.cpp` file:
+
+``` c++
+#include <ihex-parser/IntelHexFile.cpp>
+```
+
+Usage:
+======
+
+``` c++
+// ...
+IntelHexFile file('path/to/file.hex');
+auto programData = file.getProgramData();
+// ...
+```
+
+See `apps/main.cpp` for more details.
