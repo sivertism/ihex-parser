@@ -28,13 +28,13 @@ class IntelHexFileEntry {
  public:
   IntelHexFileEntry(string entry);
 
-  uint8_t getByteCount();
-  uint32_t getAddress();
+  uint8_t getByteCount() const;
+  uint32_t getAddress() const;
   void setAddress(const uint32_t address);
   uint32_t getEndAddress() const;
-  uint8_t getRecordType();
-  vector<uint8_t> getData();
-  uint8_t getChecksum();
+  uint8_t getRecordType() const;
+  vector<uint8_t> &getData();
+  uint8_t getChecksum() const;
 };
 
 #endif

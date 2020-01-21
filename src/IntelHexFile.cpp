@@ -56,6 +56,17 @@ Program IntelHexFile::getProgram() {
   return Program((const map<uint32_t, IntelHexFileEntry>)addressToFileEntries);
 }
 
+vector<pair<uint32_t, vector<uint8_t>&>> IntelHexFile::getProgramData() {
+  vector<pair<uint32_t, vector<uint8_t>&>> retval;
+
+  for (auto& e : addressToFileEntries) {
+    retval.push_back(
+        pair<uint32_t, vector<uint8_t>&>(e.first, e.second.getData()));
+  }
+
+  return retval;
+}
+
 ostream& operator<<(ostream& os, const IntelHexFile& rhs) {
   size_t lAddress = (rhs.addressToFileEntries.begin())->first;
   size_t hAddress =

@@ -9,7 +9,7 @@ void usage(string name);
 
 #define PAGE_SIZE 255
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   if (argc < 2) {
     usage(argv[0]);
     return 1;
@@ -20,6 +20,20 @@ int main(int argc, char* argv[]) {
    */
   IntelHexFile file(argv[1]);
   cout << "File: " << file << endl;
+
+  // Get raw values
+
+  for (const auto &e : file.getProgramData()) {
+    cerr << "Start address: 0x" << hex << e.first << " data: ";
+    for (int i = 0; i < e.second.size(); i++) {
+      cerr << "0x" << hex << static_cast<uint32_t>(e.second[i]);
+      if (i < e.second.size() - 1) {
+        cerr << ", ";
+      }
+    }
+    cout << '\n';
+  }
+
   return 0;
 
   /*

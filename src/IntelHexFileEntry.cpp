@@ -61,19 +61,19 @@ uint64_t IntelHexFileEntry::asciiHexTo64(string s) {
   return v;
 }
 
-uint8_t IntelHexFileEntry::getByteCount() { return data.size(); }
+uint8_t IntelHexFileEntry::getByteCount() const { return data.size(); }
 
-uint32_t IntelHexFileEntry::getAddress() { return address; }
+uint32_t IntelHexFileEntry::getAddress() const { return address; }
 
 uint32_t IntelHexFileEntry::getEndAddress() const {
   return address + data.size();
 }
 
-uint8_t IntelHexFileEntry::getRecordType() { return recordType; }
+uint8_t IntelHexFileEntry::getRecordType() const { return recordType; }
 
-vector<uint8_t> IntelHexFileEntry::getData() { return data; }
+vector<uint8_t> &IntelHexFileEntry::getData() { return data; }
 
-uint8_t IntelHexFileEntry::getChecksum() { return checksum; }
+uint8_t IntelHexFileEntry::getChecksum() const { return checksum; }
 
 void IntelHexFileEntry::setAddress(uint32_t newAddress) {
   address = newAddress;

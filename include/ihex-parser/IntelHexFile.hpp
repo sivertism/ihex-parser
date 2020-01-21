@@ -14,6 +14,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <vector>
 #include "IntelHexFileEntry.hpp"
 #include "Program.hpp"
 
@@ -29,6 +30,8 @@ class IntelHexFile {
   IntelHexFile(string filename);
 
   Program getProgram();
+
+  vector<pair<uint32_t, vector<uint8_t>&>> getProgramData();
 
   friend ostream& operator<<(ostream& os, const IntelHexFile& rhs);
 };

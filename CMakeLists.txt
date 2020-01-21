@@ -14,19 +14,48 @@ add_subdirectory(src)
 add_subdirectory(apps)
 
 # Install
+
+install(
+  TARGETS ihex-parser
+  EXPORT IntelHexParserTargets
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  INCLUDES DESTINATION include
+  )
+
 # Include files
 install(DIRECTORY include/ DESTINATION include ${CMAKE_INSTALL_INCLUDEDIR})
-install(TARGETS ihex_library LIBRARY DESTINATION lib ${CMAKE_INSTALL_LIBDIR})
 
-# CMake config files
-#install(EXPORT ihex-parser
-#DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/ihex-parser"
-#NAMESPACE IntelHexParser::
-#FILE "${CMAKE_CURRENT_BINARY_DIR}/IntelHexParserConfig.cmake"
-#)
-#install(FILES "${CMAKE_CURRENT_BINARY_DIR}/IntelHexParserConfig.cmake"
-#"${CMAKE_CURRENT_BINARY_DIR}/IntelHexParserConfigVersion.cmake"
-#DESTINATION lib/cmake/IntelHexParser
-#)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/ihex-parser/ihex-parser-config-version.cmake"
+  VERSION ${PACKAGE_VERSION}
+  COMPATIBILITY AnyNewerVersion
+  )
 
+export(EXPORT IntelHexParserTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/ihex-parser/ihex-parser-targets.cmake"
+  NAMESPACE IntelHexParser::
+  )
 
+configure_file(cmake/ihex-parser-config.cmake
+  "${CMAKE_CURRENT_BINARY_DIR}/ihex-parser/ihex-parser-config.cmake"
+  COPYONLY)
+
+set(ConfigPackageLocation lib/cmake/ihex-parser)
+install(EXPORT IntelHexParserTargets
+  FILE
+    ihex-parser-targets.cmake
+  NAMESPACE
+    IntelHexParser::
+  DESTINATION
+    ${ConfigPackageLocation}
+    )
+
+install(
+  FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/ihex-parser/ihex-parser-config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/ihex-parser/ihex-parser-config-version.cmake"
+  DESTINATION
+    "${ConfigPackageLocation}"
+  )
