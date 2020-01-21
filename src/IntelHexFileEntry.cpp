@@ -14,8 +14,6 @@ IntelHexFileEntry::IntelHexFileEntry(std::string entry) {
   uint8_t lAddress = asciiHexTo64(entry.substr(5, 2));
   address = (hAddress << 8) | lAddress;
   recordType = asciiHexTo64(entry.substr(7, 2));
-  std::cout << std::dec << recordType << std::endl;
-
   uint8_t cChecksum = (count / 2) + lAddress + hAddress + recordType;
 
   if (count != entry.length() - (9 + 2 + 1)) {
@@ -37,9 +35,6 @@ IntelHexFileEntry::IntelHexFileEntry(std::string entry) {
   uint8_t checksum = asciiHexTo64(entry.substr(entry.length() - 3, 2));
 
   if (((uint8_t)(cChecksum + checksum)) != ((uint8_t)0)) {
-    std::cout << std::hex << (size_t)address << std::endl;
-    std::cout << std::dec;
-
     std::stringstream o;
     o << "(cChecksum + checksum) != 0 | 0x";
     o << std::hex;
