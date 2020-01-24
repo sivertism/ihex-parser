@@ -13,8 +13,8 @@ cd ihex-parser
 mkdir build
 cd build
 cmake ..
-ninja
-sudo ninja install
+make
+sudo make install
 ```
 
 To test that it works, you can run the example app to print the contents of a hex file
