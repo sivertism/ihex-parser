@@ -26,24 +26,37 @@ IntelHexFile::IntelHexFile(std::string filename) {
 
     IntelHexFileEntry entry(buffer);
 
-    if ((entry.getRecordType() != 0x0) && (entry.getRecordType() != 0x1) &&
-        (entry.getRecordType() != 0x4) && (entry.getRecordType() != 0x5)) {
-      std::stringstream o;
-      o << "Unsupported record type: 0x";
-      o << std::hex << (uint32_t)entry.getRecordType();
-      throw std::ios_base::failure(o.str());
+    std::stringstream o;
+    switch (entry.getRecordType()) {
+      case 0:  // Data
+        entry.setAddress(entry.getAddress() + baseAddress);
+        addressToFileEntries.insert(
+            std::pair<uint32_t, IntelHexFileEntry>(entry.getAddress(), entry));
+        break;
+      case 1:  // End of File
+               // Ignore
+        break;
+      case 2:  // Extended Segment Address
+        o << "Unsupported record type: 0x";
+        o << std::hex << (uint32_t)entry.getRecordType();
+        throw std::ios_base::failure(o.str());
+        break;
+      case 3:  // Start Segment Address
+        // Ignored (gives the start of execution address)
+        break;
+      case 4:  // Extended Linear Address
+        baseAddress = ((entry.getData()[0] << 8) | entry.getData()[1]) << 16;
+        break;
+      case 5:  // Start Linear Address
+        // Ignore (start of execution address?)
+        break;
+      default:
+        std::stringstream o;
+        o << "Invalid record type: ";
+        o << std::hex << (uint32_t)entry.getRecordType();
+        throw std::ios_base::failure(o.str());
 
-    } else if (entry.getRecordType() == 0x4) {
-      baseAddress = ((entry.getData()[0] << 8) | entry.getData()[1]) << 16;
-
-    } else if (entry.getRecordType() == 0x5) {
-      // Ignore
-    } else if (entry.getRecordType() == 0x1) {
-      // EOF -- ignore
-    } else {
-      entry.setAddress(entry.getAddress() + baseAddress);
-      addressToFileEntries.insert(
-          std::pair<uint32_t, IntelHexFileEntry>(entry.getAddress(), entry));
+        break;
     }
   }
 }

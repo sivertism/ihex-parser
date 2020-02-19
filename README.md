@@ -30,7 +30,7 @@ Including in other CMake projects:
 Add the following to your `CMakeLists.txt` file:
 
 ``` cmake
-find package (ihex-parser REQUIRED)
+find_package(ihex-parser REQUIRED)
 
 # ...
 
@@ -40,7 +40,7 @@ target_link_libraries(myProject ... IntelHexParser::ihex-parser)
 Include the header in your source `.cpp` file:
 
 ``` c++
-#include <ihex-parser/IntelHexFile.cpp>
+#include <ihex-parser/IntelHexFile.hpp>
 ```
 
 Usage:
@@ -48,7 +48,7 @@ Usage:
 
 ``` c++
 // ...
-IntelHexFile file('path/to/file.hex');
+IntelHexFile file("path/to/file.hex");
 auto programData = file.getProgramData();
 // ...
 ```
