@@ -1,6 +1,8 @@
 IntelHexParser
 ==============
 
+[![Build Status](https://travis-ci.com/sivertism/ihex-parser.svg?branch=master)](https://travis-ci.com/github/sivertism/ihex-parser)
+
 C++ Intel Hex Parser, a utility to read executables in the [Intel Hex Format](https://en.wikipedia.org/wiki/Intel_HEX).
 This repository was forked from [bstrysko/IntelHexParser](https://github.com/bstrysko/IntelHexParser) and modified to add support for Record Type 4, fix various bugs, add accessor (IntelHexFile::getProgramData) to raw entries to avoid populating entire address space (as the original IntelHexFile::getProgram does).
 
