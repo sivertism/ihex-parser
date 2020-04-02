@@ -1,0 +1,10 @@
+dist: bionic
+sudo: false
+language: cpp
+
+install:
+  - pip install --user cmake
+
+script:
+  - cmake .
+  - cmake --build . -- -j2
