@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(IntelHexParser
-  VERSION 0.1
+  VERSION 0.2.0
   DESCRIPTION "Fork from https://github.com/bstrysko/IntelHexParser. Moved to CMAKE build system and added handling of Record Type 4."
   LANGUAGES CXX)
 

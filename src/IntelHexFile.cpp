@@ -37,9 +37,7 @@ IntelHexFile::IntelHexFile(std::string filename) {
                // Ignore
         break;
       case 2:  // Extended Segment Address
-        o << "Unsupported record type: 0x";
-        o << std::hex << (uint32_t)entry.getRecordType();
-        throw std::ios_base::failure(o.str());
+        baseAddress = ((entry.getData()[0] << 8) | entry.getData()[1]) * 16;
         break;
       case 3:  // Start Segment Address
         // Ignored (gives the start of execution address)
